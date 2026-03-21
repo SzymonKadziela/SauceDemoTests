@@ -11,6 +11,7 @@ public class InventoryPage
     private ILocator CartIcon => _page.Locator(".shopping_cart_link");
     private ILocator SortDropdown => _page.Locator("[data-test='product-sort-container']");
     private ILocator ProductNames => _page.Locator(".inventory_item_name");
+    private ILocator ProductPrices => _page.Locator(".inventory_item_price");
 
     public InventoryPage(IPage page)
     {
@@ -21,6 +22,13 @@ public class InventoryPage
         => await ProductItems.CountAsync();
 
     public async Task AddToCartAsync(string productName)
+    {
+        var item = _page.Locator(".inventory_item")
+            .Filter(new() { HasText = productName });
+        await item.Locator("button").ClickAsync();
+    }
+
+    public async Task RemoveFromCartAsync(string productName)
     {
         var item = _page.Locator(".inventory_item")
             .Filter(new() { HasText = productName });
@@ -48,5 +56,22 @@ public class InventoryPage
         for (int i = 0; i < count; i++)
             names.Add(await ProductNames.Nth(i).TextContentAsync() ?? string.Empty);
         return names;
+    }
+
+    public async Task<List<double>> GetAllProductPricesAsync()
+    {
+        var prices = new List<double>();
+        var count = await ProductPrices.CountAsync();
+        for (int i = 0; i < count; i++)
+        {
+            var text = await ProductPrices.Nth(i).TextContentAsync() ?? "0";
+            var cleaned = text.Replace("$", "");
+            if (double.TryParse(cleaned,
+                System.Globalization.NumberStyles.Any,
+                System.Globalization.CultureInfo.InvariantCulture,
+                out var price))
+                prices.Add(price);
+        }
+        return prices;
     }
 }

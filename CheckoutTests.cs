@@ -79,4 +79,28 @@ public class CheckoutTests : PageTest
         // Sprawdź czy wróciliśmy do koszyka
         await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com/cart.html");
     }
+
+    [Test]
+    public async Task Checkout_WszystkieSzescProduktow_ZamowienieZakonczonePomyslnie()
+    {
+        // Dodaj wszystkie 6 produktów do koszyka
+        var names = await _inventoryPage.GetAllProductNamesAsync();
+        foreach (var name in names)
+            await _inventoryPage.AddToCartAsync(name);
+
+        // Sprawdź czy wszystkie są w koszyku
+        var cartCount = await _inventoryPage.GetCartCountAsync();
+        Assert.That(cartCount, Is.EqualTo(6));
+
+        // Przejdź przez checkout
+        await _inventoryPage.GoToCartAsync();
+        await _cartPage.GoToCheckoutAsync();
+        await _checkoutPage.FillShippingInfoAsync("Jan", "Kowalski", "00-001");
+        await _checkoutPage.ClickContinueAsync();
+        await _checkoutPage.ClickFinishAsync();
+
+        // Sprawdź potwierdzenie
+        var isSuccess = await _checkoutPage.IsOrderSuccessfulAsync();
+        Assert.That(isSuccess, Is.True);
+    }
 }
