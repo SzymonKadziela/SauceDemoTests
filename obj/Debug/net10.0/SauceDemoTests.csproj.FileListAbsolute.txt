@@ -528,3 +528,4 @@ H:\__PlaywrightDN\SauceDemoTests\SauceDemoTests\obj\Debug\net10.0\SauceDemoTests
 H:\__PlaywrightDN\SauceDemoTests\SauceDemoTests\obj\Debug\net10.0\SauceDemoTests.genruntimeconfig.cache
 H:\__PlaywrightDN\SauceDemoTests\SauceDemoTests\obj\Debug\net10.0\ref\SauceDemoTests.dll
 H:\__PlaywrightDN\SauceDemoTests\SauceDemoTests\obj\Debug\net10.0\SauceDemoTests.sourcelink.json
+H:\__PlaywrightDN\SauceDemoTests\SauceDemoTests\bin\Debug\net10.0\RestSharp.dll
