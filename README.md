@@ -1,92 +1,92 @@
-# SauceDemo Test Automation Suite 
+# SauceDemo Test Automation Suite
 
-Projekt testów automatycznych dla [saucedemo.com](https://www.saucedemo.com) stworzony w C# z użyciem Playwright i NUnit.
+Automated test suite for [saucedemo.com](https://www.saucedemo.com) built in C# using Playwright and NUnit.
 
-## 🛠 Stack technologiczny
+## 🛠 Tech Stack
 
-| Obszar | Technologia |
+| Area | Technology |
 |---|---|
-| Język | C# / .NET 10 |
-| Testy UI | Playwright |
-| Testy API | RestSharp |
-| Framework testów | NUnit |
+| Language | C# / .NET 10 |
+| UI Tests | Playwright |
+| API Tests | RestSharp |
+| Test Framework | NUnit |
 | CI/CD | GitHub Actions |
 
-## 📁 Struktura projektu
+## 📁 Project Structure
 ```
 SauceDemoTests/
 ├── PageObjects/
-│   ├── LoginPage.cs        # Strona logowania
-│   ├── InventoryPage.cs    # Katalog produktów
-│   ├── CartPage.cs         # Koszyk
-│   └── CheckoutPage.cs     # Proces zamówienia
-├── LoginTests.cs           # Testy logowania
-├── InventoryTests.cs       # Testy katalogu
-├── CheckoutTests.cs        # Testy E2E zakupów
-├── ApiTests.cs             # Testy API
+│   ├── LoginPage.cs        # Login page
+│   ├── InventoryPage.cs    # Product catalog
+│   ├── CartPage.cs         # Shopping cart
+│   └── CheckoutPage.cs     # Checkout process
+├── LoginTests.cs           # Login tests
+├── InventoryTests.cs       # Catalog tests
+├── CheckoutTests.cs        # E2E checkout tests
+├── ApiTests.cs             # API tests
 └── .github/workflows/
-    └── ci.yml              # Pipeline CI/CD
+    └── ci.yml              # CI/CD pipeline
 ```
 
-## 🧪 Scenariusze testowe (27 testów)
+## 🧪 Test Scenarios (27 tests)
 
-### Logowanie
-- ✅ Poprawne logowanie standardowego użytkownika
-- ✅ Logowanie różnych typów użytkowników (problem, visual, performance, error)
-- ✅ Błędne hasło — komunikat o błędzie
-- ✅ Zablokowany użytkownik — komunikat o błędzie
+### Login
+- ✅ Successful login with standard user
+- ✅ Login with different user types (problem, visual, performance, error)
+- ✅ Wrong password — error message displayed
+- ✅ Locked out user — error message displayed
 
-### Katalog produktów
-- ✅ Strona wyświetla 6 produktów
-- ✅ Sortowanie A-Z i Z-A
-- ✅ Sortowanie cena rosnąco i malejąco
-- ✅ Dodawanie produktów do koszyka
-- ✅ Usuwanie produktów z koszyka
-- ✅ Walidacja cen produktów
+### Product Catalog
+- ✅ Page displays 6 products
+- ✅ Sorting A-Z and Z-A
+- ✅ Sorting by price ascending and descending
+- ✅ Adding products to cart
+- ✅ Removing products from cart
+- ✅ Product price validation
 
 ### Checkout E2E
-- ✅ Pełny happy path — od dodania do potwierdzenia zamówienia
-- ✅ Checkout ze wszystkimi 6 produktami
-- ✅ Walidacja formularza — brak imienia
-- ✅ Anulowanie checkout
+- ✅ Full happy path — from adding to cart to order confirmation
+- ✅ Checkout with all 6 products
+- ✅ Form validation — missing first name
+- ✅ Checkout cancellation
 
 ### API (JSONPlaceholder)
-- ✅ GET - pobieranie listy postów
-- ✅ GET - pobieranie pojedynczego posta
-- ✅ POST - tworzenie nowego posta
-- ✅ PUT - aktualizacja posta
-- ✅ DELETE - usunięcie posta
-- ✅ 404 - nieistniejący zasób
+- ✅ GET — fetch list of posts
+- ✅ GET — fetch single post by ID
+- ✅ POST — create new post
+- ✅ PUT — update existing post
+- ✅ DELETE — delete post
+- ✅ 404 — non-existent resource
 
-## 🚀 Uruchomienie lokalne
+## 🚀 Running Locally
 
-### Wymagania
+### Requirements
 - [.NET 10 SDK](https://dotnet.microsoft.com/download)
 - [PowerShell](https://github.com/PowerShell/PowerShell/releases)
 
-### Instalacja
+### Setup
 ```bash
-# Klonuj repo
+# Clone the repository
 git clone https://github.com/SzymonKadziela/SauceDemoTests.git
 cd SauceDemoTests/SauceDemoTests
 
-# Przywróć zależności
+# Restore dependencies
 dotnet restore
 
-# Zainstaluj przeglądarki Playwright
+# Install Playwright browsers
 dotnet build
 pwsh bin/Debug/net10.0/playwright.ps1 install
 ```
 
-### Uruchomienie testów
+### Running Tests
 ```bash
-# Wszystkie testy
+# Run all tests
 dotnet test
 
-# Konkretna klasa
+# Run specific test class
 dotnet test --filter "ClassName=SauceDemoTests.LoginTests"
 ```
 
 ## ⚙️ CI/CD
 
-Pipeline GitHub Actions uruchamia się automatycznie przy każdym Pull Request i push na `main`.
+GitHub Actions pipeline runs automatically on every Pull Request and push to `main`.
