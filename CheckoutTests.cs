@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using Microsoft.Playwright.NUnit;
 using SauceDemoTests.PageObjects;
+using Microsoft.VisualBasic;
 
 namespace SauceDemoTests;
 
@@ -102,5 +103,18 @@ public class CheckoutTests : PageTest
         // Sprawdź potwierdzenie
         var isSuccess = await _checkoutPage.IsOrderSuccessfulAsync();
         Assert.That(isSuccess, Is.True);
+    }
+
+    [Test]
+    public async Task Add_product_to_checkout_and_verify()
+    {
+        await _inventoryPage.AddToCartAsync("Sauce Labs Fleece Jacket");
+        await _inventoryPage.GoToCartAsync();
+
+        var isInCart = await _cartPage.IsItemInCartAsync("Sauce Labs Fleece Jacket");
+        Assert.That(isInCart, Is.True);
+
+        var itemCount = await _cartPage.GetItemCountAsync();
+        Assert.That(itemCount, Is.EqualTo(1));
     }
 }
