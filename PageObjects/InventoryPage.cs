@@ -74,4 +74,16 @@ public class InventoryPage
         }
         return prices;
     }
+
+    public async Task<double> GetProductPriceByNameAsync(string productName)
+    {
+        var item = _page.Locator(".inventory_item")
+            .Filter(new() { HasText = productName });
+
+        var priceText = await item.Locator(".inventory_item_price").TextContentAsync() ?? "0";
+        var cleaned = priceText.Replace("$", "");
+
+        return double.Parse(cleaned,
+            System.Globalization.CultureInfo.InvariantCulture);
+    }
 }

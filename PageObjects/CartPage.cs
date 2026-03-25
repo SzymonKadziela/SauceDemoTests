@@ -10,6 +10,7 @@ public class CartPage
     private ILocator CheckoutButton => _page.Locator("[data-test='checkout']");
     private ILocator ContinueShoppingButton => _page.Locator("[data-test='continue-shopping']");
     private ILocator ItemNames => _page.Locator(".inventory_item_name");
+    private ILocator ItemPrice => _page.Locator(".inventory_item_price");
 
     public CartPage(IPage page)
     {
@@ -30,4 +31,17 @@ public class CartPage
 
     public async Task ContinueShoppingAsync()
         => await ContinueShoppingButton.ClickAsync();
+
+    public async Task<double> GetProductPriceAsync(string productName)
+    {
+        var itemPrice = _page.Locator(".cart_item")
+            .Filter(new() { HasText = productName });
+
+        var priceText = await itemPrice.Locator(".inventory_item_price").TextContentAsync() ?? "0";
+        var cleaned = priceText.Replace("$", "");
+
+        return double.Parse(cleaned,
+            System.Globalization.CultureInfo.InvariantCulture);
+    }
+
 }

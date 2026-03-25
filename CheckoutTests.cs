@@ -117,4 +117,14 @@ public class CheckoutTests : PageTest
         var itemCount = await _cartPage.GetItemCountAsync();
         Assert.That(itemCount, Is.EqualTo(1));
     }
+
+    [Test]
+    public async Task Price_verify_checkout_vs_page()
+    {
+        var expectedPrice = await _inventoryPage.GetProductPriceByNameAsync("Sauce Labs Backpack");
+        await _inventoryPage.AddToCartAsync("Sauce Labs Backpack");
+        await _inventoryPage.GoToCartAsync();   
+        var productPrice = await _cartPage.GetProductPriceAsync("Sauce Labs Backpack");
+        Assert.That(productPrice, Is.EqualTo(expectedPrice));
+    }
 }
