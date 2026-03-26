@@ -49,4 +49,13 @@ public class LoginTests : PageTest
         await _loginPage.LoginAsync(username, password);
         await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com/inventory.html");
     }
+
+    [Test]
+    public async Task BlockEntryToInventoryWithoutLogin()
+    {
+        await _loginPage.LoginAsync("standard_user", "secret_sauce");
+        await _loginPage.LogoutAsync();
+        await Page.GotoAsync("https://www.saucedemo.com/inventory.html");
+        await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com");
+    }
 }

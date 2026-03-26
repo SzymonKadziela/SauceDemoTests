@@ -11,6 +11,8 @@ public class LoginPage
     private ILocator PasswordInput => _page.Locator("#password");
     private ILocator LoginButton => _page.Locator("#login-button");
     private ILocator ErrorMessage => _page.Locator("[data-test='error']");
+    private ILocator BurgerMenu => _page.Locator("#react-burger-menu-btn");
+    private ILocator LogoutButton => _page.Locator("#logout_sidebar_link");
 
     public LoginPage(IPage page)
     {
@@ -33,4 +35,11 @@ public class LoginPage
 
     public async Task<bool> IsErrorVisibleAsync()
         => await ErrorMessage.IsVisibleAsync();
+
+    public async Task LogoutAsync()
+    {
+        await BurgerMenu.ClickAsync();
+        await LogoutButton.WaitForAsync();
+        await LogoutButton.ClickAsync();
+    }
 }
