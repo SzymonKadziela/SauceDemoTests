@@ -26,7 +26,20 @@ jobs:
         run: dotnet build --no-restore
 
       - name: Zainstaluj przeglądarki Playwright
-        run: dotnet tool install --global Microsoft.Playwright.CLI && playwright install --with-deps chromium
+        run: pwsh SauceDemoTests/bin/Debug/net10.0/playwright.ps1 install --with-deps
 
       - name: Uruchom testy
-        run: dotnet test --no-build
+        run: dotnet test --no-build --logger "trx;LogFileName=results.trx" --results-directory reports/
+
+      - name: Publikuj raport z testów
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: reports/results.trx
+
+      - name: Podsumowanie testów na GitHub
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: reports/results.trx
