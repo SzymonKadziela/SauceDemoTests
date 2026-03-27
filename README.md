@@ -28,35 +28,42 @@ SauceDemoTests/
     └── ci.yml              # CI/CD pipeline
 ```
 
-## 🧪 Test Scenarios (27 tests)
+## 🧪 Test Scenarios (31 tests)
 
 ### Login
 - ✅ Successful login with standard user
 - ✅ Login with different user types (problem, visual, performance, error)
-- ✅ Wrong password — error message displayed
-- ✅ Locked out user — error message displayed
+- ✅ Wrong password - error message displayed
+- ✅ Locked out user - error message displayed
+- ✅ Blocked access to inventory without login
 
 ### Product Catalog
 - ✅ Page displays 6 products
 - ✅ Sorting A-Z and Z-A
 - ✅ Sorting by price ascending and descending
 - ✅ Adding products to cart
+- ✅ Adding 3 products - cart count equals 3
 - ✅ Removing products from cart
 - ✅ Product price validation
+- ✅ Cart badge visibility - shows correct count and disappears when empty
+
+### Cart
+- ✅ Product visible in cart after adding
+- ✅ Price in cart matches price in catalog
 
 ### Checkout E2E
-- ✅ Full happy path — from adding to cart to order confirmation
+- ✅ Full happy path - from adding to cart to order confirmation
 - ✅ Checkout with all 6 products
-- ✅ Form validation — missing first name
+- ✅ Form validation - missing first name
 - ✅ Checkout cancellation
 
 ### API (JSONPlaceholder)
-- ✅ GET — fetch list of posts
-- ✅ GET — fetch single post by ID
-- ✅ POST — create new post
-- ✅ PUT — update existing post
-- ✅ DELETE — delete post
-- ✅ 404 — non-existent resource
+- ✅ GET - fetch list of posts
+- ✅ GET - fetch single post by ID
+- ✅ POST - create new post
+- ✅ PUT - update existing post
+- ✅ DELETE - delete post
+- ✅ 404 - non-existent resource
 
 ## 🚀 Running Locally
 
