@@ -63,7 +63,7 @@ SauceDemoTests/
 - ✅ POST - create new post
 - ✅ PUT - update existing post
 - ✅ DELETE - delete post
-- ✅ 404 - non-existent resource
+- ✅ 404 -git  non-existent resource
 
 ## 🚀 Running Locally
 
