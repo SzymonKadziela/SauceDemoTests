@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using RestSharp;
 using Newtonsoft.Json.Linq;
+using System.Reflection;
 
 namespace SauceDemoTests;
 
@@ -105,5 +106,22 @@ public class ApiTests
         var response = await _client.ExecuteAsync(request);
 
         Assert.That((int)response.StatusCode, Is.EqualTo(404));
+    }
+
+    [Test]
+    public async Task GET_User1_ZwracaPoprawneDaneIEmail()
+    {
+        var request = new RestRequest("/users/1", Method.Get);
+        var response = await _client.ExecuteAsync(request);
+
+        Assert.That((int)response.StatusCode, Is.EqualTo(200));
+        
+        var post = JObject.Parse(response.Content!);
+        Assert.That(post["id"]!.Value<int>(), Is.EqualTo(1));
+        Assert.That(post["name"], Is.Not.Null);
+        var email = post["email"]!.Value<string>();
+        Assert.That(email, Does.Contain("@"));
+        Assert.That(post["username"], Is.Not.Null);
+        
     }
 }
