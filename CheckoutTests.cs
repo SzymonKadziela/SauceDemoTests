@@ -127,4 +127,17 @@ public class CheckoutTests : PageTest
         var productPrice = await _cartPage.GetProductPriceAsync("Sauce Labs Backpack");
         Assert.That(productPrice, Is.EqualTo(expectedPrice));
     }
+
+    [Test]
+    public async Task Cart_badge_visibility_and_count()
+    {
+        await _inventoryPage.AddToCartAsync("Sauce Labs Backpack");
+        await _inventoryPage.AddToCartAsync("Sauce Labs Bike Light");
+        var badge = await _inventoryPage.GetCartCountAsync();
+        Assert.That(badge, Is.EqualTo(2));
+        await _inventoryPage.RemoveFromCartAsync("Sauce Labs Backpack");
+        await _inventoryPage.RemoveFromCartAsync("Sauce Labs Bike Light");
+        var count = await _inventoryPage.GetCartCountAsync();
+        Assert.That(count, Is.EqualTo(0));
+    }
 }
