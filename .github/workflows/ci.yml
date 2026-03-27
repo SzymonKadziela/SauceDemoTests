@@ -37,9 +37,3 @@ jobs:
         with:
           name: test-results
           path: reports/results.trx
-
-      - name: Podsumowanie testów na GitHub
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always()
-        with:
-          files: reports/results.trx
