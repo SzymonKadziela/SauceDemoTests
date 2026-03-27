@@ -26,7 +26,7 @@ jobs:
         run: dotnet build --no-restore
 
       - name: Zainstaluj przeglądarki Playwright
-        run: pwsh SauceDemoTests/bin/Debug/net10.0/playwright.ps1 install --with-deps
+        run: dotnet tool install --global Microsoft.Playwright.CLI && playwright install --with-deps chromium
 
       - name: Uruchom testy
         run: dotnet test --no-build --logger "trx;LogFileName=results.trx" --results-directory reports/
