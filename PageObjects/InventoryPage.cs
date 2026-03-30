@@ -12,6 +12,7 @@ public class InventoryPage
     private ILocator SortDropdown => _page.Locator("[data-test='product-sort-container']");
     private ILocator ProductNames => _page.Locator(".inventory_item_name");
     private ILocator ProductPrices => _page.Locator(".inventory_item_price");
+   
 
     public InventoryPage(IPage page)
     {
@@ -86,4 +87,7 @@ public class InventoryPage
         return double.Parse(cleaned,
             System.Globalization.CultureInfo.InvariantCulture);
     }
+
+    public async Task ClickProductByNameAsync(string productName)
+        => await _page.Locator(".inventory_item_name", new() { HasText = productName }).ClickAsync();
 }

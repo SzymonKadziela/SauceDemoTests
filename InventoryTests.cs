@@ -97,4 +97,22 @@ public class InventoryTests : PageTest
         Assert.That(prices.Count, Is.EqualTo(6));
         Assert.That(prices.All(p => p > 0), Is.True);
     }
+
+    [Test]
+    public async Task ProductDetails_TitleAndPrice_MatchCatalog()
+    {
+        var products = await _inventoryPage.GetAllProductNamesAsync();
+        var productName = products[0];
+
+        await _inventoryPage.ClickProductByNameAsync(productName);
+        await Expect(Page.Locator(".inventory_details_name"))
+        .ToHaveTextAsync(productName);
+
+        var priceText = await Page.Locator(".inventory_details_price").InnerTextAsync();
+        var price = decimal.Parse(
+            priceText.Replace("$", ""),
+            System.Globalization.CultureInfo.InvariantCulture);
+        Assert.That(price, Is.GreaterThan(0));
+
+    }
 }
