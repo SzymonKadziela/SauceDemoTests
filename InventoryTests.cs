@@ -8,13 +8,15 @@ public class InventoryTests : PageTest
 {
     private LoginPage _loginPage = null!;
     private InventoryPage _inventoryPage = null!;
+    private CartPage _cartPage = null!;
 
     [SetUp]
     public async Task SetUp()
     {
         _loginPage = new LoginPage(Page);
         _inventoryPage = new InventoryPage(Page);
-
+        _cartPage = new CartPage(Page);
+        
         await _loginPage.GoToAsync();
         await _loginPage.LoginAsync("standard_user", "secret_sauce");
     }
@@ -114,5 +116,16 @@ public class InventoryTests : PageTest
             System.Globalization.CultureInfo.InvariantCulture);
         Assert.That(price, Is.GreaterThan(0));
 
+    }
+
+    [Test]
+    public async Task ContinueShopping_AfterAddingProduct_CartItemsArePreserved()
+    {
+        await _inventoryPage.AddToCartAsync("Sauce Labs Backpack");
+        await _inventoryPage.GoToCartAsync();
+        await _cartPage.ContinueShoppingAsync();
+        await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com/inventory.html");
+        var count = await _inventoryPage.GetCartCountAsync();
+        Assert.That(count, Is.EqualTo(1));
     }
 }
