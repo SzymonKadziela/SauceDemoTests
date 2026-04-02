@@ -28,7 +28,7 @@ SauceDemoTests/
     └── ci.yml              # CI/CD pipeline
 ```
 
-## 🧪 Test Scenarios (31 tests)
+## 🧪 Test Scenarios (34 tests)
 
 ### Login
 - ✅ Successful login with standard user
@@ -46,6 +46,8 @@ SauceDemoTests/
 - ✅ Removing products from cart
 - ✅ Product price validation
 - ✅ Cart badge visibility - shows correct count and disappears when empty
+- ✅ Product details title and price match catalog
+- ✅ Continue shopping returns to catalog with cart preserved
 
 ### Cart
 - ✅ Product visible in cart after adding
@@ -60,6 +62,7 @@ SauceDemoTests/
 ### API (JSONPlaceholder)
 - ✅ GET - fetch list of posts
 - ✅ GET - fetch single post by ID
+- ✅ GET — fetch user with valid fields and email format
 - ✅ POST - create new post
 - ✅ PUT - update existing post
 - ✅ DELETE - delete post
