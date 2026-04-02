@@ -128,4 +128,19 @@ public class InventoryTests : PageTest
         var count = await _inventoryPage.GetCartCountAsync();
         Assert.That(count, Is.EqualTo(1));
     }
+
+    [Test]
+    public async Task Verifies_product_count_matches_cart()
+    {
+        await _inventoryPage.AddManyToCartAsync(
+            "Sauce Labs Backpack", 
+            "Sauce Labs Bike Light", 
+            "Sauce Labs Onesie"
+        );
+        var icount = await _inventoryPage.GetCartCountAsync();
+        Assert.That(icount, Is.EqualTo(3));
+        await _inventoryPage.GoToCartAsync();
+        var ccount = await _cartPage.GetItemCountAsync();
+        Assert.That(ccount, Is.EqualTo(3));
+    }
 }

@@ -90,4 +90,12 @@ public class InventoryPage
 
     public async Task ClickProductByNameAsync(string productName)
         => await _page.Locator(".inventory_item_name", new() { HasText = productName }).ClickAsync();
+
+    public async Task AddManyToCartAsync(params string[] productNames)
+    {
+        foreach (var name in productNames)
+        {
+            await AddToCartAsync(name);
+        }
+    }
 }
