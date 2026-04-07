@@ -28,7 +28,7 @@ SauceDemoTests/
     └── ci.yml              # CI/CD pipeline
 ```
 
-## 🧪 Test Scenarios (34 tests)
+## 🧪 Test Scenarios (36 tests)
 
 ### Login
 - ✅ Successful login with standard user
@@ -48,6 +48,8 @@ SauceDemoTests/
 - ✅ Cart badge visibility - shows correct count and disappears when empty
 - ✅ Product details title and price match catalog
 - ✅ Continue shopping returns to catalog with cart preserved
+- ✅ Cart badge count matches actual cart items
+- ✅ Cheapest product price after sorting matches price in cart
 
 ### Cart
 - ✅ Product visible in cart after adding
