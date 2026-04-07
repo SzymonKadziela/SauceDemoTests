@@ -143,4 +143,19 @@ public class InventoryTests : PageTest
         var ccount = await _cartPage.GetItemCountAsync();
         Assert.That(ccount, Is.EqualTo(3));
     }
+
+    [Test]
+    public async Task SortByPriceLowToHigh_CheapestProduct_PriceMatchesInCart()
+    {
+        await _inventoryPage.SortByAsync("lohi");
+        var allPrice = await _inventoryPage.GetAllProductPricesAsync();
+        var allNames = await _inventoryPage.GetAllProductNamesAsync();
+        await _inventoryPage.AddToCartAsync(allNames[0]);
+        await _inventoryPage.GoToCartAsync();
+        var count = await _cartPage.GetItemCountAsync();
+        Assert.That(count, Is.EqualTo(1));
+        var lowPriceCart = await _cartPage.GetProductPriceAsync(allNames[0]);
+        var lowPriceInventory = allPrice[0];
+        Assert.That(lowPriceCart, Is.EqualTo(lowPriceInventory));
+    }
 }
