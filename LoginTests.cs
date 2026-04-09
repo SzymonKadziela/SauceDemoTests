@@ -4,7 +4,7 @@ using SauceDemoTests.PageObjects;
 
 namespace SauceDemoTests;
 
-public class LoginTests : PageTest
+public class LoginTests : BaseTest
 {
     private LoginPage _loginPage = null!;
     private InventoryPage _inventoryPage = null!;

@@ -5,7 +5,7 @@ using Microsoft.VisualBasic;
 
 namespace SauceDemoTests;
 
-public class CheckoutTests : PageTest
+public class CheckoutTests : BaseTest
 {
     private LoginPage _loginPage = null!;
     private InventoryPage _inventoryPage = null!;
