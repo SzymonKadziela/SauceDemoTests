@@ -54,4 +54,12 @@ public class CheckoutPage
 
     public async Task ClickBackHomeAsync()
         => await BackHomeButton.ClickAsync();
+
+    public async Task CompletePurchaseAndReturnHomeAsync(string firstName, string lastName, string zip)
+    {
+        await FillShippingInfoAsync(firstName, lastName, zip);
+        await ContinueButton.ClickAsync();
+        await FinishButton.ClickAsync();
+        await BackHomeButton.ClickAsync();
+    }
 }
