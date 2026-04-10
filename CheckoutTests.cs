@@ -140,4 +140,19 @@ public class CheckoutTests : BaseTest
         var count = await _inventoryPage.GetCartCountAsync();
         Assert.That(count, Is.EqualTo(0));
     }
+
+    [Test]
+    public async Task Checkout_AfterCompletion_BackHomeReturnsToInventoryWithEmptyCart()
+    {
+        await _inventoryPage.AddToCartAsync("Sauce Labs Backpack");
+        await _inventoryPage.GoToCartAsync();
+        await _cartPage.GoToCheckoutAsync();
+        await _checkoutPage.FillShippingInfoAsync("John", "Doe", "21-377");
+        await _checkoutPage.ClickContinueAsync();
+        await _checkoutPage.ClickFinishAsync();
+        await _checkoutPage.ClickBackHomeAsync();
+        await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com/inventory.html");
+        var count = await _inventoryPage.GetCartCountAsync();
+        Assert.That(count, Is.EqualTo(0));
+    }
 }

@@ -14,6 +14,7 @@ public class CheckoutPage
     private ILocator ConfirmationHeader => _page.Locator(".complete-header");
     private ILocator ErrorMessage => _page.Locator("[data-test='error']");
     private ILocator CancelButton => _page.Locator("[data-test='cancel']");
+    private ILocator BackHomeButton => _page.Locator("[data-test='back-to-products']");
 
     public CheckoutPage(IPage page)
     {
@@ -50,4 +51,7 @@ public class CheckoutPage
 
     public async Task<bool> IsErrorVisibleAsync()
         => await ErrorMessage.IsVisibleAsync();
+
+    public async Task ClickBackHomeAsync()
+        => await BackHomeButton.ClickAsync();
 }
