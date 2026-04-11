@@ -12,7 +12,7 @@ public class InventoryPage
     private ILocator SortDropdown => _page.Locator("[data-test='product-sort-container']");
     private ILocator ProductNames => _page.Locator(".inventory_item_name");
     private ILocator ProductPrices => _page.Locator(".inventory_item_price");
-   
+    
 
     public InventoryPage(IPage page)
     {

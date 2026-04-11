@@ -158,4 +158,14 @@ public class InventoryTests : BaseTest
         var lowPriceInventory = allPrice[0];
         Assert.That(lowPriceCart, Is.EqualTo(lowPriceInventory));
     }
+
+    [Test]
+    public async Task Verifies_description_isNotEmpty()
+    {
+        var products = await _inventoryPage.GetAllProductNamesAsync();
+        await _inventoryPage.ClickProductByNameAsync(products[0]);
+        var productDesc = await Page.Locator(".inventory_details_desc").TextContentAsync();
+        Assert.That(productDesc, Is.Not.Empty);
+        Assert.That(productDesc, Has.Length.GreaterThan(10));
+    }
 }
