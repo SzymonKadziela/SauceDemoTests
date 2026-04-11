@@ -77,7 +77,6 @@ public class CheckoutTests : BaseTest
 
         await _checkoutPage.ClickCancelAsync();
 
-        // Sprawdź czy wróciliśmy do koszyka
         await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com/cart.html");
     }
 
@@ -151,5 +150,24 @@ public class CheckoutTests : BaseTest
         await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com/inventory.html");
         var count = await _inventoryPage.GetCartCountAsync();
         Assert.That(count, Is.EqualTo(0));
+    }
+
+    [Test]
+    public async Task RemoveAllItemsFromCart_CartIsEmpty_CheckoutButtonStillVisible()
+    {
+        var products = await _inventoryPage.GetAllProductNamesAsync();
+        await _inventoryPage.AddManyToCartAsync(
+            products[0], 
+            products[1], 
+            products[2]
+        );
+        await _inventoryPage.GoToCartAsync();
+        await _cartPage.RemoveItemFromCartAsync(products[0]);
+        await _cartPage.RemoveItemFromCartAsync(products[1]);
+        await _cartPage.RemoveItemFromCartAsync(products[2]);
+        var itemCounts = await _cartPage.GetItemCountAsync();
+        Assert.That(itemCounts, Is.EqualTo(0));
+        var isVisible = await _cartPage.IsCheckoutButtonVisibleAsync();
+        Assert.That(isVisible, Is.True);
     }
 }

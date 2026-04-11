@@ -44,4 +44,13 @@ public class CartPage
             System.Globalization.CultureInfo.InvariantCulture);
     }
 
+    public async Task RemoveItemFromCartAsync(string productName)
+    {
+        var item = _page.Locator(".cart_item")
+            .Filter(new() { HasText = productName });
+        await item.Locator("button").ClickAsync();
+    }
+
+    public async Task<bool> IsCheckoutButtonVisibleAsync()
+    => await CheckoutButton.IsVisibleAsync();
 }
