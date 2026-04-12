@@ -170,4 +170,25 @@ public class CheckoutTests : BaseTest
         var isVisible = await _cartPage.IsCheckoutButtonVisibleAsync();
         Assert.That(isVisible, Is.True);
     }
+
+    [Test]
+    public async Task TotalPrice_OnCheckout_isCorrect()
+    {
+        var products = await _inventoryPage.GetAllProductNamesAsync();
+        await _inventoryPage.AddManyToCartAsync(
+            products[0],
+            products[1]
+        );
+        await _inventoryPage.GoToCartAsync();
+        await _cartPage.GoToCheckoutAsync();
+        await _checkoutPage.FillShippingInfoAsync("John", "Doe", "21-377");
+        await _checkoutPage.ClickContinueAsync();
+        
+        decimal subtotal = await _checkoutPage.GetSubtotalAsync();
+        decimal tax = await _checkoutPage.GetTaxAsync();
+        decimal total = await _checkoutPage.GetTotalAsync();
+
+        Assert.That(subtotal + tax, Is.EqualTo(total),
+            $"Suma {subtotal} + {tax} powinna wynosic {total}");
+    }
 }

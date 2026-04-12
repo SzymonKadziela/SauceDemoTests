@@ -1,4 +1,6 @@
 using Microsoft.Playwright;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace SauceDemoTests.PageObjects;
 
@@ -15,6 +17,9 @@ public class CheckoutPage
     private ILocator ErrorMessage => _page.Locator("[data-test='error']");
     private ILocator CancelButton => _page.Locator("[data-test='cancel']");
     private ILocator BackHomeButton => _page.Locator("[data-test='back-to-products']");
+    private ILocator ItemTotal => _page.Locator(".summary_subtotal_label");
+    private ILocator Tax => _page.Locator(".summary_tax_label");
+    private ILocator Total => _page.Locator(".summary_total_label");
 
     public CheckoutPage(IPage page)
     {
@@ -62,4 +67,21 @@ public class CheckoutPage
         await FinishButton.ClickAsync();
         await BackHomeButton.ClickAsync();
     }
+
+    private async Task<decimal> ParsePriceAsync(ILocator locator)
+    {
+       var text = await locator.InnerTextAsync();
+       var match = Regex.Match(text, @"\d+\.\d+");
+
+        if (match.Success)
+        {
+            return decimal.Parse(match.Value, CultureInfo.InvariantCulture);
+        }
+
+        throw new Exception($"Błąd: Nie znaleziono kwoty w tekście: '{text}'");
+    }
+
+    public async Task<decimal> GetSubtotalAsync() => await ParsePriceAsync(ItemTotal);
+    public async Task<decimal> GetTaxAsync() => await ParsePriceAsync(Tax);
+    public async Task<decimal> GetTotalAsync() => await ParsePriceAsync(Total);
 }
