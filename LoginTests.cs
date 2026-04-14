@@ -1,6 +1,8 @@
 using NUnit.Framework;
 using Microsoft.Playwright.NUnit;
 using SauceDemoTests.PageObjects;
+using SauceDemoTests.Configuration;
+using System.Text.RegularExpressions;
 
 namespace SauceDemoTests;
 
@@ -18,9 +20,10 @@ public class LoginTests : BaseTest
     }
 
     [Test]
-    public async Task PoprawneLogowanie_PrzenosiBDoInventory()
+    [TestCaseSource(typeof(UserFactory), nameof(UserFactory.GetLoginTestData))]
+    public async Task PoprawneLogowanie_PrzenosiBDoInventory(UserCredentials user)
     {
-        await _loginPage.LoginAsync("standard_user", "secret_sauce");
+        await _loginPage.LoginAsync(user.Username, user.Password);
         await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com/inventory.html");
     }
 
@@ -28,8 +31,8 @@ public class LoginTests : BaseTest
     public async Task BledneHaslo_WyswietlaBlad()
     {
         await _loginPage.LoginAsync("standard_user", "zle_haslo");
-        var czyBladWidoczny = await _loginPage.IsErrorVisibleAsync();
-        Assert.That(czyBladWidoczny, Is.True);
+        var errorVisible = await _loginPage.IsErrorVisibleAsync();
+        Assert.That(errorVisible, Is.True);
     }
 
     [Test]
@@ -57,5 +60,16 @@ public class LoginTests : BaseTest
         await _loginPage.LogoutAsync();
         await Page.GotoAsync("https://www.saucedemo.com/inventory.html");
         await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com");
+    }
+
+    [Test]
+    public async Task LoginError_AfterClickingX_ErrorMessageDisappears()
+    {
+        await _loginPage.LoginAsync("standard_userError", "secret_sauce");
+        var errorVisible = await _loginPage.IsErrorVisibleAsync();
+        Assert.That(errorVisible, Is.True);
+        await _loginPage.CloseErrorAsync();
+        var errorNotVisible = await _loginPage.IsErrorVisibleAsync();
+        Assert.That(errorNotVisible, Is.False);
     }
 }

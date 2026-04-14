@@ -27,25 +27,19 @@ public class CheckoutTests : BaseTest
     [Test]
     public async Task PelnyCheckout_ZamowienieZakonczonePomyslnie()
     {
-        // Dodaj produkt do koszyka
         await _inventoryPage.AddToCartAsync("Sauce Labs Backpack");
         await _inventoryPage.GoToCartAsync();
 
-        // Sprawdź czy produkt jest w koszyku
         var isInCart = await _cartPage.IsItemInCartAsync("Sauce Labs Backpack");
         Assert.That(isInCart, Is.True);
 
-        // Przejdź do checkout
         await _cartPage.GoToCheckoutAsync();
 
-        // Wypełnij dane
         await _checkoutPage.FillShippingInfoAsync("Jan", "Kowalski", "00-001");
         await _checkoutPage.ClickContinueAsync();
 
-        // Zakończ zamówienie
         await _checkoutPage.ClickFinishAsync();
 
-        // Sprawdź potwierdzenie
         var isSuccess = await _checkoutPage.IsOrderSuccessfulAsync();
         Assert.That(isSuccess, Is.True);
     }
@@ -83,23 +77,19 @@ public class CheckoutTests : BaseTest
     [Test]
     public async Task Checkout_WszystkieSzescProduktow_ZamowienieZakonczonePomyslnie()
     {
-        // Dodaj wszystkie 6 produktów do koszyka
         var names = await _inventoryPage.GetAllProductNamesAsync();
         foreach (var name in names)
             await _inventoryPage.AddToCartAsync(name);
 
-        // Sprawdź czy wszystkie są w koszyku
         var cartCount = await _inventoryPage.GetCartCountAsync();
         Assert.That(cartCount, Is.EqualTo(6));
 
-        // Przejdź przez checkout
         await _inventoryPage.GoToCartAsync();
         await _cartPage.GoToCheckoutAsync();
         await _checkoutPage.FillShippingInfoAsync("Jan", "Kowalski", "00-001");
         await _checkoutPage.ClickContinueAsync();
         await _checkoutPage.ClickFinishAsync();
 
-        // Sprawdź potwierdzenie
         var isSuccess = await _checkoutPage.IsOrderSuccessfulAsync();
         Assert.That(isSuccess, Is.True);
     }

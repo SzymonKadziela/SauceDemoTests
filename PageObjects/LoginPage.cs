@@ -13,6 +13,7 @@ public class LoginPage
     private ILocator ErrorMessage => _page.Locator("[data-test='error']");
     private ILocator BurgerMenu => _page.Locator("#react-burger-menu-btn");
     private ILocator LogoutButton => _page.Locator("#logout_sidebar_link");
+    private ILocator ErrorButton => _page.Locator(".error-button");
 
     public LoginPage(IPage page)
     {
@@ -42,4 +43,7 @@ public class LoginPage
         await LogoutButton.WaitForAsync();
         await LogoutButton.ClickAsync();
     }
+
+    public async Task CloseErrorAsync()
+        => await ErrorButton.ClickAsync();
 }

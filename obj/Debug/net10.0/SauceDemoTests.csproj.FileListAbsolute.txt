@@ -529,3 +529,13 @@ H:\__PlaywrightDN\SauceDemoTests\SauceDemoTests\obj\Debug\net10.0\SauceDemoTests
 H:\__PlaywrightDN\SauceDemoTests\SauceDemoTests\obj\Debug\net10.0\ref\SauceDemoTests.dll
 H:\__PlaywrightDN\SauceDemoTests\SauceDemoTests\obj\Debug\net10.0\SauceDemoTests.sourcelink.json
 H:\__PlaywrightDN\SauceDemoTests\SauceDemoTests\bin\Debug\net10.0\RestSharp.dll
+H:\__PlaywrightDN\SauceDemoTests\SauceDemoTests\bin\Debug\net10.0\Microsoft.Extensions.Configuration.dll
+H:\__PlaywrightDN\SauceDemoTests\SauceDemoTests\bin\Debug\net10.0\Microsoft.Extensions.Configuration.Abstractions.dll
+H:\__PlaywrightDN\SauceDemoTests\SauceDemoTests\bin\Debug\net10.0\Microsoft.Extensions.Configuration.Binder.dll
+H:\__PlaywrightDN\SauceDemoTests\SauceDemoTests\bin\Debug\net10.0\Microsoft.Extensions.Configuration.FileExtensions.dll
+H:\__PlaywrightDN\SauceDemoTests\SauceDemoTests\bin\Debug\net10.0\Microsoft.Extensions.Configuration.Json.dll
+H:\__PlaywrightDN\SauceDemoTests\SauceDemoTests\bin\Debug\net10.0\Microsoft.Extensions.FileProviders.Abstractions.dll
+H:\__PlaywrightDN\SauceDemoTests\SauceDemoTests\bin\Debug\net10.0\Microsoft.Extensions.FileProviders.Physical.dll
+H:\__PlaywrightDN\SauceDemoTests\SauceDemoTests\bin\Debug\net10.0\Microsoft.Extensions.FileSystemGlobbing.dll
+H:\__PlaywrightDN\SauceDemoTests\SauceDemoTests\bin\Debug\net10.0\Microsoft.Extensions.Primitives.dll
+H:\__PlaywrightDN\SauceDemoTests\SauceDemoTests\bin\Debug\net10.0\appsettings.json
