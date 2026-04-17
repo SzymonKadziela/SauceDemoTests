@@ -12,6 +12,13 @@ Automated test suite for [saucedemo.com](https://www.saucedemo.com) built in C# 
 | Test Framework | NUnit |
 | CI/CD | GitHub Actions |
 
+## 🏗 Architecture
+
+- **Page Object Model** - each page has its own class
+- **Configuration layer** - credentials and settings loaded from `appsettings.json`
+- **UserFactory** - test data generated dynamically via `TestCaseSource`
+- **BaseTest** - automatic screenshots on failure
+
 ## 📁 Project Structure
 ```
 SauceDemoTests/

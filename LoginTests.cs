@@ -28,9 +28,10 @@ public class LoginTests : BaseTest
     }
 
     [Test]
-    public async Task BledneHaslo_WyswietlaBlad()
+    [TestCaseSource(typeof(UserFactory), nameof(UserFactory.GetLoginTestData))]
+    public async Task BledneHaslo_WyswietlaBlad(UserCredentials user)
     {
-        await _loginPage.LoginAsync("standard_user", "zle_haslo");
+        await _loginPage.LoginAsync(user.Username, "zle_haslo");
         var errorVisible = await _loginPage.IsErrorVisibleAsync();
         Assert.That(errorVisible, Is.True);
     }
