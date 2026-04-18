@@ -1,7 +1,8 @@
 using NUnit.Framework;
 using Microsoft.Playwright.NUnit;
 using SauceDemoTests.PageObjects;
-using Microsoft.VisualBasic;
+using SauceDemoTests.Configuration;
+using System.Text.RegularExpressions;
 
 namespace SauceDemoTests;
 
@@ -180,5 +181,11 @@ public class CheckoutTests : BaseTest
 
         Assert.That(subtotal + tax, Is.EqualTo(total),
             $"Suma {subtotal} + {tax} powinna wynosic {total}");
+    }
+
+    [Test]
+    public async Task Verifies_URLchangeCorrectly_whenNavigateBpage()
+    {
+        
     }
 }
