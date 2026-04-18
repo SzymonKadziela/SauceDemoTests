@@ -1,11 +1,20 @@
 using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
+using SauceDemoTests.Configuration;
 
 namespace SauceDemoTests;
 
 public class BaseTest : PageTest
 {
+    protected TestDataConfig Config { get; private set; } = null!;
+
+    [SetUp]
+    public void BaseSetup()
+    {
+        Config = ConfigReader.GetConfig();
+    }
+        
     [TearDown]
     public async Task TakeScreenshotOnFailure()
     {

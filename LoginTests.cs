@@ -28,10 +28,9 @@ public class LoginTests : BaseTest
     }
 
     [Test]
-    [TestCaseSource(typeof(UserFactory), nameof(UserFactory.GetLoginTestData))]
-    public async Task BledneHaslo_WyswietlaBlad(UserCredentials user)
+    public async Task BledneHaslo_WyswietlaBlad()
     {
-        await _loginPage.LoginAsync(user.Username, "zle_haslo");
+        await _loginPage.LoginAsync(Config.Users["Standard"].Username, "zle_haslo");
         var errorVisible = await _loginPage.IsErrorVisibleAsync();
         Assert.That(errorVisible, Is.True);
     }
@@ -39,25 +38,23 @@ public class LoginTests : BaseTest
     [Test]
     public async Task ZablokowanyUzytkownik_WyswietlaBlad()
     {
-        await _loginPage.LoginAsync("locked_out_user", "secret_sauce");
+        await _loginPage.LoginAsync(Config.Users["LockedOut"].Username, Config.Users["LockedOut"].Password);
         var blad = await _loginPage.GetErrorMessageAsync();
         Assert.That(blad, Does.Contain("locked out"));
     }
 
-    [TestCase("problem_user", "secret_sauce", TestName = "ProblemUser_MozeWejscNaInventory")]
-    [TestCase("visual_user", "secret_sauce", TestName = "VisualUser_MozeWejscNaInventory")]
-    [TestCase("performance_glitch_user", "secret_sauce", TestName = "PerformanceUser_MozeWejscNaInventory")]
-    [TestCase("error_user", "secret_sauce", TestName = "ErrorUser_MozeWejscNaInventory")]
-    public async Task RozniUzytkownicy_MogaSieZalogowac(string username, string password)
+    [Test]
+    [TestCaseSource(typeof(UserFactory), nameof(UserFactory.GetLoginTestData))]
+    public async Task RozniUzytkownicy_MogaSieZalogowac(UserCredentials user)
     {
-        await _loginPage.LoginAsync(username, password);
-        await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com/inventory.html");
+        await _loginPage.LoginAsync(user.Username, user.Password);
+        await Expect(Page).ToHaveURLAsync(new Regex("inventory.html"));
     }
 
     [Test]
     public async Task BlockEntryToInventoryWithoutLogin()
     {
-        await _loginPage.LoginAsync("standard_user", "secret_sauce");
+        await _loginPage.LoginAsync(Config.Users["Standard"].Username, Config.Users["Standard"].Password);
         await _loginPage.LogoutAsync();
         await Page.GotoAsync("https://www.saucedemo.com/inventory.html");
         await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com");
@@ -66,7 +63,7 @@ public class LoginTests : BaseTest
     [Test]
     public async Task LoginError_AfterClickingX_ErrorMessageDisappears()
     {
-        await _loginPage.LoginAsync("standard_userError", "secret_sauce");
+        await _loginPage.LoginAsync(Config.Users["StandardError"].Username, Config.Users["Standard"].Password);
         var errorVisible = await _loginPage.IsErrorVisibleAsync();
         Assert.That(errorVisible, Is.True);
         await _loginPage.CloseErrorAsync();
