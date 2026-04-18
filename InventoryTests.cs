@@ -1,6 +1,8 @@
 using NUnit.Framework;
 using Microsoft.Playwright.NUnit;
 using SauceDemoTests.PageObjects;
+using SauceDemoTests.Configuration;
+using System.Text.RegularExpressions;
 
 namespace SauceDemoTests;
 
@@ -18,12 +20,12 @@ public class InventoryTests : BaseTest
         _cartPage = new CartPage(Page);
         
         await _loginPage.GoToAsync();
-        await _loginPage.LoginAsync("standard_user", "secret_sauce");
     }
 
     [Test]
     public async Task Inventory_WyswietlaSzescProduktow()
     {
+        await LoginAs("Standard");
         var count = await _inventoryPage.GetProductCountAsync();
         Assert.That(count, Is.EqualTo(6));
     }
@@ -31,6 +33,7 @@ public class InventoryTests : BaseTest
     [Test]
     public async Task DodanieDoKoszyka_AktualizujeLicznik()
     {
+        await LoginAs("Standard");
         await _inventoryPage.AddToCartAsync("Sauce Labs Backpack");
         var count = await _inventoryPage.GetCartCountAsync();
         Assert.That(count, Is.EqualTo(1));
@@ -39,6 +42,7 @@ public class InventoryTests : BaseTest
     [Test]
     public async Task DodanieTrzechProduktow_LicznikRownyTrzem()
     {
+        await LoginAs("Standard");
         await _inventoryPage.AddToCartAsync("Sauce Labs Backpack");
         await _inventoryPage.AddToCartAsync("Sauce Labs Bike Light");
         await _inventoryPage.AddToCartAsync("Sauce Labs Bolt T-Shirt");
@@ -49,6 +53,7 @@ public class InventoryTests : BaseTest
     [Test]
     public async Task Sortowanie_AZ_ProduktySaPoKolei()
     {
+        await LoginAs("Standard");
         await _inventoryPage.SortByAsync("az");
         var names = await _inventoryPage.GetAllProductNamesAsync();
         var sorted = names.OrderBy(n => n).ToList();
@@ -58,6 +63,7 @@ public class InventoryTests : BaseTest
     [Test]
     public async Task Sortowanie_ZA_ProduktySaOdwrotnie()
     {
+        await LoginAs("Standard");
         await _inventoryPage.SortByAsync("za");
         var names = await _inventoryPage.GetAllProductNamesAsync();
         var sorted = names.OrderByDescending(n => n).ToList();
@@ -67,6 +73,7 @@ public class InventoryTests : BaseTest
     [Test]
     public async Task Sortowanie_CenaRosnaco_ProduktySaPoKolei()
     {
+        await LoginAs("Standard");
         await _inventoryPage.SortByAsync("lohi");
         var prices = await _inventoryPage.GetAllProductPricesAsync();
         var sorted = prices.OrderBy(p => p).ToList();
@@ -76,6 +83,7 @@ public class InventoryTests : BaseTest
     [Test]
     public async Task Sortowanie_CenaMalejaco_ProduktySaPoKolei()
     {
+        await LoginAs("Standard");
         await _inventoryPage.SortByAsync("hilo");
         var prices = await _inventoryPage.GetAllProductPricesAsync();
         var sorted = prices.OrderByDescending(p => p).ToList();
@@ -85,6 +93,7 @@ public class InventoryTests : BaseTest
     [Test]
     public async Task UsuniecieZKoszyka_AktualizujeLicznik()
     {
+        await LoginAs("Standard");
         await _inventoryPage.AddToCartAsync("Sauce Labs Backpack");
         Assert.That(await _inventoryPage.GetCartCountAsync(), Is.EqualTo(1));
 
@@ -95,6 +104,7 @@ public class InventoryTests : BaseTest
     [Test]
     public async Task CenyProduktow_SaWiekszeDZero()
     {
+        await LoginAs("Standard");
         var prices = await _inventoryPage.GetAllProductPricesAsync();
         Assert.That(prices.Count, Is.EqualTo(6));
         Assert.That(prices.All(p => p > 0), Is.True);
@@ -103,6 +113,7 @@ public class InventoryTests : BaseTest
     [Test]
     public async Task ProductDetails_TitleAndPrice_MatchCatalog()
     {
+        await LoginAs("Standard");
         var products = await _inventoryPage.GetAllProductNamesAsync();
         var productName = products[0];
 
@@ -121,6 +132,7 @@ public class InventoryTests : BaseTest
     [Test]
     public async Task ContinueShopping_AfterAddingProduct_CartItemsArePreserved()
     {
+        await LoginAs("Standard");
         await _inventoryPage.AddToCartAsync("Sauce Labs Backpack");
         await _inventoryPage.GoToCartAsync();
         await _cartPage.ContinueShoppingAsync();
@@ -132,6 +144,7 @@ public class InventoryTests : BaseTest
     [Test]
     public async Task Verifies_product_count_matches_cart()
     {
+        await LoginAs("Standard");
         await _inventoryPage.AddManyToCartAsync(
             "Sauce Labs Backpack", 
             "Sauce Labs Bike Light", 
@@ -147,6 +160,7 @@ public class InventoryTests : BaseTest
     [Test]
     public async Task SortByPriceLowToHigh_CheapestProduct_PriceMatchesInCart()
     {
+        await LoginAs("Standard");
         await _inventoryPage.SortByAsync("lohi");
         var allPrice = await _inventoryPage.GetAllProductPricesAsync();
         var allNames = await _inventoryPage.GetAllProductNamesAsync();
@@ -162,10 +176,25 @@ public class InventoryTests : BaseTest
     [Test]
     public async Task Verifies_description_isNotEmpty()
     {
+        await LoginAs("Standard");
         var products = await _inventoryPage.GetAllProductNamesAsync();
         await _inventoryPage.ClickProductByNameAsync(products[0]);
         var productDesc = await Page.Locator(".inventory_details_desc").TextContentAsync();
         Assert.That(productDesc, Is.Not.Empty);
         Assert.That(productDesc, Has.Length.GreaterThan(10));
     }
+
+    [Test]
+    public async Task Verifies_problemUser_haveBrokenImages()
+    {
+        await LoginAs("Problem");
+        var images = await Page.Locator(".inventory_item_img img").AllAsync();
+        var srcList = await Task.WhenAll(images.Select(img => img.GetAttributeAsync("src")));
+
+        Assert.That(srcList, Is.All.Contains("sl-404"));
+        Assert.That(srcList.Distinct().Count(), Is.EqualTo(1), 
+                "Użytkownik powinien widzieć tylko jeden i ten sam typ obrazka!");
+        
+    }
+    
 }

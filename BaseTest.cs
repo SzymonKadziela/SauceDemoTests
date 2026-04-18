@@ -2,6 +2,7 @@ using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using SauceDemoTests.Configuration;
+using SauceDemoTests.PageObjects;
 
 namespace SauceDemoTests;
 
@@ -13,6 +14,15 @@ public class BaseTest : PageTest
     public void BaseSetup()
     {
         Config = ConfigReader.GetConfig();
+    }
+
+    protected async Task LoginAs(string userKey) 
+    {
+        var user = Config.Users[userKey];
+        
+        var loginPage = new LoginPage(Page);
+        await loginPage.GoToAsync();
+        await loginPage.LoginAsync(user.Username, user.Password);
     }
         
     [TearDown]
