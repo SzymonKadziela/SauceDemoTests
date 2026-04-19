@@ -186,6 +186,18 @@ public class CheckoutTests : BaseTest
     [Test]
     public async Task Verifies_URLchangeCorrectly_whenNavigateBpage()
     {
-        
+        var products = await _inventoryPage.GetAllProductNamesAsync();
+        await _inventoryPage.AddToCartAsync(products[0]);
+        await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com/inventory.html");
+        await _inventoryPage.GoToCartAsync();
+        await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com/cart.html");
+        await _cartPage.GoToCheckoutAsync();
+        await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com/checkout-step-one.html");
+        await _checkoutPage.FillShippingInfoAsync("John", "Doe", "21-377");
+        await _checkoutPage.ClickContinueAsync();
+        await Page.WaitForURLAsync("**/checkout-step-two.html");
+        await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com/checkout-step-two.html");
+        await _checkoutPage.ClickFinishAsync();
+        await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com/checkout-complete.html");
     }
 }
