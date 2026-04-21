@@ -35,7 +35,7 @@ SauceDemoTests/
     └── ci.yml              # CI/CD pipeline
 ```
 
-## 🧪 Test Scenarios (36 tests)
+## 🧪 Test Scenarios (48 tests)
 
 ### Login
 - ✅ Successful login with standard user
@@ -43,6 +43,8 @@ SauceDemoTests/
 - ✅ Wrong password - error message displayed
 - ✅ Locked out user - error message displayed
 - ✅ Blocked access to inventory without login
+- ✅ Login error disappears after clicking X
+- ✅ Error message disappears when clicking X
 
 ### Product Catalog
 - ✅ Page displays 6 products
@@ -57,6 +59,10 @@ SauceDemoTests/
 - ✅ Continue shopping returns to catalog with cart preserved
 - ✅ Cart badge count matches actual cart items
 - ✅ Cheapest product price after sorting matches price in cart
+- ✅ Verifies description is not empty
+- ✅ Verifies problem user has broken images
+
+
 
 ### Cart
 - ✅ Product visible in cart after adding
@@ -67,6 +73,7 @@ SauceDemoTests/
 - ✅ Checkout with all 6 products
 - ✅ Form validation - missing first name
 - ✅ Checkout cancellation
+- ✅ Verifies URL change correctly on step two
 
 ### API (JSONPlaceholder)
 - ✅ GET - fetch list of posts
@@ -76,6 +83,7 @@ SauceDemoTests/
 - ✅ PUT - update existing post
 - ✅ DELETE - delete post
 - ✅ 404 -git  non-existent resource
+- ✅ PUT - update existing post
 
 ## 🚀 Running Locally
 
