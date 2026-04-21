@@ -35,7 +35,7 @@ SauceDemoTests/
     └── ci.yml              # CI/CD pipeline
 ```
 
-## 🧪 Test Scenarios (48 tests)
+## 🧪 Test Scenarios
 
 ### Login
 - ✅ Successful login with standard user
@@ -61,8 +61,6 @@ SauceDemoTests/
 - ✅ Cheapest product price after sorting matches price in cart
 - ✅ Verifies description is not empty
 - ✅ Verifies problem user has broken images
-
-
 
 ### Cart
 - ✅ Product visible in cart after adding
