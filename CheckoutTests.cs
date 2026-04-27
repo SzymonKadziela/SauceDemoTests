@@ -211,4 +211,16 @@ public class CheckoutTests : BaseTest
         var itemCounts = await _cartPage.GetItemCountAsync();
         Assert.That(itemCounts, Is.EqualTo(0));
     }
+
+    [Test]
+    public async Task ProductInCartAfterLogout()
+    {
+        var products = await _inventoryPage.GetAllProductNamesAsync();
+        await _inventoryPage.AddToCartAsync(products[0]);
+        await _loginPage.LogoutAsync();
+        await LoginAs("Standard");
+        await _inventoryPage.GoToCartAsync();
+        var itemCounts = await _cartPage.GetItemCountAsync();
+        Assert.That(itemCounts, Is.EqualTo(1));
+    }
 }
