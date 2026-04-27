@@ -124,4 +124,18 @@ public class ApiTests
         Assert.That(post["username"], Is.Not.Null);
         
     }
+
+    [Test]
+    public async Task GET_Posts_ResponseHeaders_AreCorrect()
+    {
+        var request = new RestRequest("/posts/1", Method.Get);
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+        var response = await _client.ExecuteAsync(request);
+
+        stopwatch.Stop();
+
+        Assert.That((int)response.StatusCode, Is.EqualTo(200));
+        Assert.That(response.ContentType, Does.Contain("application/json"));
+        Assert.That(stopwatch.ElapsedMilliseconds, Is.LessThan(500));
+    }
 }
