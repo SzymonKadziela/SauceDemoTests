@@ -98,4 +98,6 @@ public class InventoryPage
             await AddToCartAsync(name);
         }
     }
+
+    
 }

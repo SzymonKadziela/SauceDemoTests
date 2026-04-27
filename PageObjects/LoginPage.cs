@@ -14,6 +14,7 @@ public class LoginPage
     private ILocator BurgerMenu => _page.Locator("#react-burger-menu-btn");
     private ILocator LogoutButton => _page.Locator("#logout_sidebar_link");
     private ILocator ErrorButton => _page.Locator(".error-button");
+    private ILocator ResetAppState => _page.Locator("[data-test='reset-sidebar-link']");
 
     public LoginPage(IPage page)
     {
@@ -46,4 +47,11 @@ public class LoginPage
 
     public async Task CloseErrorAsync()
         => await ErrorButton.ClickAsync();
+
+    public async Task ResetAppStateAsync()
+    {
+        await BurgerMenu.ClickAsync();
+        await ResetAppState.WaitForAsync();
+        await ResetAppState.ClearAsync();
+    }
 }

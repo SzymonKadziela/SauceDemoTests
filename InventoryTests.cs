@@ -196,5 +196,14 @@ public class InventoryTests : BaseTest
                 "Użytkownik powinien widzieć tylko jeden i ten sam typ obrazka!");
         
     }
+
+    public async Task ResetAppStateVerify()
+    {
+        await LoginAs("Standard");
+        await _inventoryPage.AddToCartAsync("Sauce Labs Backpack");
+        await _loginPage.ResetAppStateAsync();
+        var count = await _cartPage.GetItemCountAsync();
+        Assert.That(count, Is.EqualTo(1));
+    }
     
 }
