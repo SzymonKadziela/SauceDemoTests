@@ -200,4 +200,15 @@ public class CheckoutTests : BaseTest
         await _checkoutPage.ClickFinishAsync();
         await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com/checkout-complete.html");
     }
+
+    [Test]
+    public async Task RemoveLastItemFromCart()
+    {
+        var products = await _inventoryPage.GetAllProductNamesAsync();
+        await _inventoryPage.AddToCartAsync(products[0]);
+        await _inventoryPage.GoToCartAsync();
+        await _cartPage.RemoveItemFromCartAsync(products[0]);
+        var itemCounts = await _cartPage.GetItemCountAsync();
+        Assert.That(itemCounts, Is.EqualTo(0));
+    }
 }
