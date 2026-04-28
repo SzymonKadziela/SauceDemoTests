@@ -138,4 +138,26 @@ public class ApiTests
         Assert.That(response.ContentType, Does.Contain("application/json"));
         Assert.That(stopwatch.ElapsedMilliseconds, Is.LessThan(500));
     }
+
+    [Test]
+    public async Task POST_InvalidDataTypes_JSONPlaceholderAcceptsAnyway()
+    {
+        var request = new RestRequest("/posts", Method.Post);
+    
+        request.AddJsonBody(new
+        {
+            title = 12345,
+            userId = "string"
+        });
+
+        var response = await _client.ExecuteAsync(request);
+
+        Assert.That((int)response.StatusCode, Is.EqualTo(201));
+        
+        if (!string.IsNullOrEmpty(response.Content))
+        {
+            var post = JObject.Parse(response.Content);
+            Assert.That(post["title"], Is.Not.Null);
+        }
+    }
 }
