@@ -52,6 +52,6 @@ public class LoginPage
     {
         await BurgerMenu.ClickAsync();
         await ResetAppState.WaitForAsync();
-        await ResetAppState.ClearAsync();
+        await ResetAppState.ClickAsync();
     }
 }

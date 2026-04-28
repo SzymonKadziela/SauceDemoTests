@@ -197,13 +197,31 @@ public class InventoryTests : BaseTest
         
     }
 
+    [Test]
     public async Task ResetAppStateVerify()
     {
         await LoginAs("Standard");
         await _inventoryPage.AddToCartAsync("Sauce Labs Backpack");
         await _loginPage.ResetAppStateAsync();
         var count = await _cartPage.GetItemCountAsync();
-        Assert.That(count, Is.EqualTo(1));
+        Assert.That(count, Is.EqualTo(0));
+    }
+
+    [Test]
+    public async Task ProblemUser_AddToCart_ButtonsDoNotChangeState()
+    {
+        await LoginAs("Problem");
+        
+        await _inventoryPage.AddToCartAsync("Sauce Labs Bolt T-Shirt");
+        await _inventoryPage.AddToCartAsync("Sauce Labs Onesie");
+
+        var boltButton = Page.Locator(".inventory_item")
+        .Filter(new() { HasText = "Sauce Labs Bolt T-Shirt" })
+        .Locator("button");
+
+        var boltButtonText = await boltButton.TextContentAsync();
+        Assert.That(boltButtonText, Does.Contain("Add to cart"),
+            "Problem user powinien mieć bug gdzie przycisk się nie zmienia");
     }
     
 }
