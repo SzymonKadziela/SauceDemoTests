@@ -20,7 +20,7 @@ public class BaseTest : PageTest
     {
         var user = Config.Users[userKey];
         
-        var loginPage = new LoginPage(Page);
+        var loginPage = new LoginPage(Page, Config.BaseUrl);
         await loginPage.GoToAsync();
         await loginPage.LoginAsync(user.Username, user.Password);
     }

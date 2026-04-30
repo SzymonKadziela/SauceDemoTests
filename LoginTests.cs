@@ -14,7 +14,7 @@ public class LoginTests : BaseTest
     [SetUp]
     public async Task SetUp()
     {
-        _loginPage = new LoginPage(Page);
+        _loginPage = new LoginPage(Page, Config.BaseUrl);
         _inventoryPage = new InventoryPage(Page);
         await _loginPage.GoToAsync();
     }
@@ -24,7 +24,7 @@ public class LoginTests : BaseTest
     public async Task PoprawneLogowanie_PrzenosiBDoInventory(UserCredentials user)
     {
         await _loginPage.LoginAsync(user.Username, user.Password);
-        await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com/inventory.html");
+        await Expect(Page).ToHaveURLAsync(Config.InventoryUrl);
     }
 
     [Test]
@@ -56,8 +56,8 @@ public class LoginTests : BaseTest
     {
         await _loginPage.LoginAsync(Config.Users["Standard"].Username, Config.Users["Standard"].Password);
         await _loginPage.LogoutAsync();
-        await Page.GotoAsync("https://www.saucedemo.com/inventory.html");
-        await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com");
+        await Page.GotoAsync(Config.InventoryUrl);
+        await Expect(Page).ToHaveURLAsync(Config.BaseUrl);
     }
 
     [Test]

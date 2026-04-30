@@ -15,7 +15,7 @@ public class InventoryTests : BaseTest
     [SetUp]
     public async Task SetUp()
     {
-        _loginPage = new LoginPage(Page);
+        _loginPage = new LoginPage(Page, Config.BaseUrl);
         _inventoryPage = new InventoryPage(Page);
         _cartPage = new CartPage(Page);
         

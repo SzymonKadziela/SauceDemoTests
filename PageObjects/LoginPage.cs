@@ -5,6 +5,7 @@ namespace SauceDemoTests.PageObjects;
 public class LoginPage
 {
     private readonly IPage _page;
+    private readonly string _baseUrl;
 
     // Lokatory - czyli "adresy" elementów na stronie
     private ILocator UsernameInput => _page.Locator("#user-name");
@@ -16,14 +17,15 @@ public class LoginPage
     private ILocator ErrorButton => _page.Locator(".error-button");
     private ILocator ResetAppState => _page.Locator("[data-test='reset-sidebar-link']");
 
-    public LoginPage(IPage page)
+    public LoginPage(IPage page, string baseUrl)
     {
         _page = page;
+        _baseUrl = baseUrl;
     }
 
     // Akcje które można wykonać na stronie logowania
     public async Task GoToAsync()
-        => await _page.GotoAsync("https://www.saucedemo.com");
+        => await _page.GotoAsync(_baseUrl);
 
     public async Task LoginAsync(string username, string password)
     {
