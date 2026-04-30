@@ -72,7 +72,7 @@ public class CheckoutTests : BaseTest
 
         await _checkoutPage.ClickCancelAsync();
 
-        await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com/cart.html");
+        await Expect(Page).ToHaveURLAsync(Config.CartUrl);
     }
 
     [Test]
@@ -138,7 +138,7 @@ public class CheckoutTests : BaseTest
         await _inventoryPage.GoToCartAsync();
         await _cartPage.GoToCheckoutAsync();
         await _checkoutPage.CompletePurchaseAndReturnHomeAsync("John", "Doe", "21-377");
-        await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com/inventory.html");
+        await Expect(Page).ToHaveURLAsync(Config.InventoryUrl);
         var count = await _inventoryPage.GetCartCountAsync();
         Assert.That(count, Is.EqualTo(0));
     }
@@ -188,17 +188,17 @@ public class CheckoutTests : BaseTest
     {
         var products = await _inventoryPage.GetAllProductNamesAsync();
         await _inventoryPage.AddToCartAsync(products[0]);
-        await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com/inventory.html");
+        await Expect(Page).ToHaveURLAsync(Config.InventoryUrl);
         await _inventoryPage.GoToCartAsync();
-        await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com/cart.html");
+        await Expect(Page).ToHaveURLAsync(Config.CartUrl);
         await _cartPage.GoToCheckoutAsync();
-        await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com/checkout-step-one.html");
+        await Expect(Page).ToHaveURLAsync(Config.CheckoutStepOneUrl);
         await _checkoutPage.FillShippingInfoAsync("John", "Doe", "21-377");
         await _checkoutPage.ClickContinueAsync();
         await Page.WaitForURLAsync("**/checkout-step-two.html");
-        await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com/checkout-step-two.html");
+        await Expect(Page).ToHaveURLAsync(Config.CheckoutStepTwoUrl);
         await _checkoutPage.ClickFinishAsync();
-        await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com/checkout-complete.html");
+        await Expect(Page).ToHaveURLAsync(Config.CheckoutCompleteUrl);
     }
 
     [Test]

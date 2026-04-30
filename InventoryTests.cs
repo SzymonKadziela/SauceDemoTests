@@ -136,7 +136,7 @@ public class InventoryTests : BaseTest
         await _inventoryPage.AddToCartAsync("Sauce Labs Backpack");
         await _inventoryPage.GoToCartAsync();
         await _cartPage.ContinueShoppingAsync();
-        await Expect(Page).ToHaveURLAsync("https://www.saucedemo.com/inventory.html");
+        await Expect(Page).ToHaveURLAsync(Config.InventoryUrl);
         var count = await _inventoryPage.GetCartCountAsync();
         Assert.That(count, Is.EqualTo(1));
     }
